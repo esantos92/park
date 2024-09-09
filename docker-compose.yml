@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  park_postgres:
+    container_name: park_db_postgres
+    image: 'postgres:13.6-alpine'
+    environment:
+      - POSTGRES_DB=park_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - 'postgres:/var/lib/postgresql/data'
+
+  park_app:
+    container_name: park_app
+    depends_on:
+      - 'park_postgres'
+    build: .
+    command: make park-startup
+    ports:
+      - '3000:3000'
+    volumes:
+      - '.:/usr/src/rails:rw'
+
+volumes:
+  postgres:
