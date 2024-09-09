@@ -3,8 +3,6 @@ class Payment < ApplicationRecord
 
   belongs_to :car
 
-  validates :car_id, presence: true
-
   aasm column: :status do
     state :pending, initial: true
     state :paid

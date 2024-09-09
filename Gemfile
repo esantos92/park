@@ -1,13 +1,13 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-ruby "3.2.2"
+ruby '3.2.2'
 
 gem 'aasm'
-gem "rails", "~> 7.1.1"
-gem "pg", "~> 1.1"
-gem "puma", ">= 5.0"
-gem "tzinfo-data", platforms: %i[ windows jruby ]
-gem "bootsnap", require: false
+gem 'bootsnap', require: false
+gem 'pg', '~> 1.1'
+gem 'puma', '>= 5.0'
+gem 'rails', '~> 7.1.1'
+gem 'tzinfo-data', platforms: %i[windows jruby]
 
 group :test do
   gem 'shoulda-matchers', '~> 6.0'
@@ -18,8 +18,9 @@ group :development do
 end
 
 group :development, :test do
-  gem "debug", platforms: %i[ mri windows ]
+  gem 'debug', platforms: %i[mri windows]
   gem 'factory_bot_rails'
   gem 'rspec-rails', '~> 7.0.0'
+  gem 'rubocop-rails', '~> 2.18'
+  gem 'rubocop-rspec', '~> 2.19'
 end
-
