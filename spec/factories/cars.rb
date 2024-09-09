@@ -1,5 +1,9 @@
 FactoryBot.define do
   factory :car do
-    status { 'bla' }
+    plate { 'ABC-1234' }
+
+    trait :checkouted do
+      status { 'checkouted' }
+    end
   end
 end
