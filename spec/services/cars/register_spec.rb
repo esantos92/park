@@ -22,11 +22,27 @@ RSpec.describe Cars::Register do
       let(:plate) { '1234-ABC' }
 
       it 'does not create a Car register' do
-        expect { subject }.to not_change(Car, :count)
+        expect { subject }.to raise_error(StandardError)
+        expect(Car.count).to eq(0)
       end
 
       it 'does creates a Payment register' do
-        expect { subject }.to not_change(Payment, :count)
+        expect { subject }.to raise_error(StandardError)
+        expect(Payment.count).to eq(0)
+      end
+    end
+
+    context 'when occurs some error with payment creation' do
+      before { allow(Payment).to receive(:create!).and_return(StandardError) }
+
+      it 'does not create a Car register' do
+        expect { subject }.to raise_error(StandardError)
+        expect(Car.count).to eq(0)
+      end
+
+      it 'does creates a Payment register' do
+        expect { subject }.to raise_error(StandardError)
+        expect(Payment.count).to eq(0)
       end
     end
   end

@@ -15,8 +15,6 @@ module Cars
         register_car!
         create_payment!
       end
-    rescue StandardError => e
-      e.message
     end
 
     private
