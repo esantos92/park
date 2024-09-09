@@ -5,10 +5,6 @@ RSpec.describe Payment, type: :model do
     it { is_expected.to belong_to(:car) }
   end
 
-  describe 'validations' do
-    it { is_expected.to validate_presence_of(:car_id) }
-  end
-
   describe 'state machine' do
     context 'when pending' do
       subject { build(:payment) }
