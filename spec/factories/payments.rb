@@ -1,6 +1,9 @@
 FactoryBot.define do
   factory :payment do
-    status { "MyString" }
-    car { nil }
+    association :car
+
+    trait :paid do
+      status { 'paid' }
+    end
   end
 end

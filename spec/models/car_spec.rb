@@ -18,4 +18,18 @@ RSpec.describe Car, type: :model do
       end
     end
   end
+
+  describe 'state machine' do
+    context 'when entered' do
+      subject { build(:car) }
+
+      it { is_expected.to allow_transition_to(:checkouted) }
+    end
+
+    context 'when checkouted' do
+      subject { build(:car, :checkouted) }
+
+      it { is_expected.not_to allow_transition_to(:entered) }
+    end
+  end
 end
