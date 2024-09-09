@@ -1,62 +1,59 @@
 name: CI
-on: push
+
+on:
+  pull_request:
+    types: [opened, ready_for_review, synchronize]
+
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  rubocop:
-    name: Rubocop
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v1
+  lint-and-test:
+    runs-on: ubuntu-latest
 
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-          ruby-version: '3.2.2'
-
-      - name: Analyze code
-        run: bundle exec rubocop
-
-  rspec:
-    name: RSpec
-    needs: rubocop
-    runs-on: ubuntu-20.04
     env:
+      CI: true
       RAILS_ENV: test
-      DATABASE_URL: postgres://postgres:example@localhost:5432/park_test
+      DB_HOST: localhost
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: postgres
+      DB_PORT: 5432
+
     services:
       postgres:
-        image: postgres:latest
-        ports: ['5432:5432']
         env:
           POSTGRES_DB: park_test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v1
+        image: postgres:13-alpine
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
 
-      - name: Install postgres client dependencies
-        run: sudo apt-get install libpq-dev
-
-      - name: Install Yarn packages
-        run: yarn install --pure-lockfile
-
-      - name: Create database
+      - name: Setup database
         run: |
           bundle exec rails db:create
-          # Se o projeto usar `schema.rb`
-          bundle exec rails db:schema:load
-          # Se o projeto usar `structure.sql`
-          bundle exec rails db:structure:load
-          # Se o projeto não usar nenhum dos dois
           bundle exec rails db:migrate
 
-    - name: Run tests
-      run: bundle exec rspec spec
+      - name: Run Rubocop
+        run: bundle exec rubocop
+
+      - name: Run Tests
+        run: bundle exec rspec
