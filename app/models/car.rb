@@ -8,10 +8,14 @@ class Car < ApplicationRecord
 
   aasm column: :status do
     state :entered, initial: true
-    state :checkouted
+    state :checkouted, before_enter: :assign_check_out
 
     event :checkout do
       transitions from: :entered, to: :checkouted
     end
+  end
+
+  def assign_check_out
+    self.check_out ||= Time.zone.now
   end
 end

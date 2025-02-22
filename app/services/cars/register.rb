@@ -11,6 +11,8 @@ module Cars
     attr_reader :car, :plate
 
     def call
+      validate!
+
       ApplicationRecord.transaction do
         register_car!
         create_payment!
@@ -18,6 +20,14 @@ module Cars
     end
 
     private
+
+    def validate!
+      raise ArgumentError, 'This car has some enter opened registered' if car_has_opened_enter?
+    end
+
+    def car_has_opened_enter?
+      Car.where(plate: plate).entered.present?
+    end
 
     def register_car!
       @car = Car.create!(plate: plate)
