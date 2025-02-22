@@ -16,6 +16,6 @@ class Car < ApplicationRecord
   end
 
   def assign_check_out
-    self.check_out ||= Time.now
+    self.check_out ||= Time.zone.now
   end
 end

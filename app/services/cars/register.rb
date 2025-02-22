@@ -22,9 +22,6 @@ module Cars
     private
 
     def validate!
-      
-      # binding.pry
-      
       raise ArgumentError, 'This car has some enter opened registered' if car_has_opened_enter?
     end
 
