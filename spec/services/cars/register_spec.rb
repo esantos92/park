@@ -5,7 +5,7 @@ RSpec.describe Cars::Register do
 
   describe '#call' do
     context 'with a valid plate' do
-      let(:plate) { 'ABC-1234' }
+      let(:plate) { 'CBA-1234' }
 
       it 'creates a Car register' do
         expect { subject }.to change(Car, :count).by(1)
@@ -40,10 +40,18 @@ RSpec.describe Cars::Register do
         expect(Car.count).to eq(0)
       end
 
-      it 'does creates a Payment register' do
+      it 'does not create a Payment register' do
         expect { subject }.to raise_error(StandardError)
         expect(Payment.count).to eq(0)
       end
+    end
+
+    context 'when car has some opened enter registered' do
+      let(:car) { create(:car) }
+
+      subject { described_class.call(car.plate) }
+
+      it { expect { subject }.to raise_error(ArgumentError) }
     end
   end
 end
