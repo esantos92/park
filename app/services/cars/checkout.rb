@@ -18,7 +18,7 @@ module Cars
     private
 
     def validate!
-      raise ArgumentError, 'Car does not have a paid payment' unless car_has_a_paid_payment?
+      raise ArgumentError, 'Carro não tem um pagamento pago' unless car_has_a_paid_payment?
     end
 
     def car_has_a_paid_payment?
