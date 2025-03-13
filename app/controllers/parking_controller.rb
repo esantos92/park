@@ -4,7 +4,7 @@ class ParkingController < ApplicationController
 
     render json: { message: 'Carro sem registros' }, status: :ok and return if registers.empty?
 
-    body =[]
+    body = []
     registers.each do |register|
       payload = {
         id: register.id,
@@ -25,7 +25,6 @@ class ParkingController < ApplicationController
     Cars::Register.call(car_params[:plate])
 
     render json: { message: 'Carro registrado' }
-
   rescue ArgumentError => e
     render json: { message: e.message }, status: :bad_request
   end
@@ -48,7 +47,7 @@ class ParkingController < ApplicationController
     end
   rescue ActiveRecord::RecordNotFound
     render json: { message: 'Carro não encontrado' }, status: :not_found
-  rescue => e
+  rescue StandardError => e
     render json: { message: e.message }, status: :bad_request
   end
 
@@ -69,6 +68,7 @@ class ParkingController < ApplicationController
   end
 
   private
+
   def car_params
     params.permit(:plate)
   end
