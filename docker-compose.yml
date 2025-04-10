@@ -24,5 +24,15 @@ services:
     volumes:
       - '.:/usr/src/app:rw'
 
+  rabbitmq:
+    container_name: park_rabbitmq
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672" # Porta para comunicação com a aplicação
+      - "15672:15672" # Porta para acessar o painel de administração
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
 volumes:
   postgres:

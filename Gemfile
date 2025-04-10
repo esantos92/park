@@ -4,6 +4,7 @@ ruby '3.2.2'
 
 gem 'aasm'
 gem 'bootsnap', require: false
+gem 'bunny'
 gem 'pg', '~> 1.1'
 gem 'pry-rails'
 gem 'puma', '>= 5.0'
