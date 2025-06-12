@@ -9,8 +9,9 @@ class RabbitmqConsumer
     queue = channel.queue(queue)
 
     queue.subscribe(block: true) do |_delivery_info, _properties, body|
-      puts "Mensagem recebida: #{body}"
+      Rails.logger.info "Mensagem recebida: #{body}"
       # Processar a mensagem aqui
     end
   end
 end
+
