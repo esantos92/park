@@ -12,3 +12,4 @@ class RabbitmqProducer
     connection.close
   end
 end
+
