@@ -20,6 +20,7 @@ group :development, :test do
   gem 'pry', '~> 0.14.2'
   gem 'pry-byebug', '~> 3.10'
   gem 'rspec-rails', '~> 7.0.0'
+  gem 'rubocop'
   gem 'rubocop-rails', '~> 2.18'
   gem 'rubocop-rspec', '~> 2.19'
 end

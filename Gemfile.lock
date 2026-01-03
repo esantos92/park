@@ -272,6 +272,7 @@ DEPENDENCIES
   puma (>= 5.0)
   rails (~> 7.1.1)
   rspec-rails (~> 7.0.0)
+  rubocop
   rubocop-rails (~> 2.18)
   rubocop-rspec (~> 2.19)
   shoulda-matchers (~> 6.0)
