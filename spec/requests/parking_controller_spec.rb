@@ -95,6 +95,21 @@ RSpec.describe 'ParkingController', type: :request do
       expect { request }.to change(Car, :count).by(1)
       expect(Car.last.plate).to eq(plate)
     end
+
+    context 'when there is an opened register for the plate' do
+      let(:error_message) { 'This car has some enter opened registered' }
+
+      before do
+        allow(Cars::Register).to receive(:call).and_raise(ArgumentError, error_message)
+      end
+
+      it 'returns bad request' do
+        request
+
+        expect(response).to have_http_status(:bad_request)
+        expect(JSON.parse(response.body)["message"]).to eq(error_message)
+      end
+    end
   end
 
   describe 'PUT /parking/:id/pay' do
@@ -124,6 +139,21 @@ RSpec.describe 'ParkingController', type: :request do
         let(:id) { car.id + 1 }
 
         it_behaves_like 'a car not found'
+      end
+
+      context 'when an unexpected error occurs' do
+        let(:error_message) { 'some error' }
+
+        before do
+          allow_any_instance_of(Payment).to receive(:pay!).and_raise(StandardError, error_message)
+        end
+
+        it 'returns bad request' do
+          request
+
+          expect(response).to have_http_status(:bad_request)
+          expect(JSON.parse(response.body)["message"]).to eq(error_message)
+        end
       end
     end
   end
